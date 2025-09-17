@@ -1,6 +1,11 @@
 @tailwind utilities;
 @import "tailwindcss";
 
+@theme {
+  --color-main: #ff4000;
+  --color-background: #f8f3fe;
+  --color-outline: #ddd2ff;
+}
 body {
   font-family: "Poppins", sans-serif;
 }
