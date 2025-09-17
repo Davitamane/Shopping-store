@@ -4,7 +4,7 @@ import Cart from "../assets/Cart.svg";
 import Profile from "../assets/profile.jpeg";
 function Header() {
   return (
-    <div className="my-10 mx-10 flex items-center justify-between  max-w-screen ">
+    <div className="my-10 mx-25 flex items-center justify-between  max-w-screen ">
       <Link to="/">
         <img src={Logo} className="w-60" />
       </Link>

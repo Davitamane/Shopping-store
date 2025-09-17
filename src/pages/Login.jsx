@@ -48,9 +48,6 @@ function Login() {
             </div>
           </div>
         )}
-        {/* Login part */}
-
-        {/* Register part */}
       </div>
     </div>
   );
