@@ -15,7 +15,7 @@ const PlaceholderText = ({ text, required, isTyping }) => {
   );
 };
 
-function Input({ text, required = false, error }) {
+function Input({ text, required = false, error, setState, value }) {
   const [isTyping, setIsTyping] = useState(false);
 
   return (
@@ -26,27 +26,40 @@ function Input({ text, required = false, error }) {
         className={`w-full border rounded-lg px-3 py-2 pr-7 text-gray-700 appearance-none 
           ${error ? "border-red-500" : "border-gray-300"} 
           focus:outline-none focus:shadow-sm`}
-        onChange={(e) => setIsTyping(e.target.value.length > 0)}
+        onChange={(e) => {
+          setIsTyping(e.target.value.length > 0);
+          setState(e.target.value);
+        }}
+        value={value}
       />
     </div>
   );
 }
 
-function Addons({ text, error, required }) {
+function Addons({ text, error, required, setState, value }) {
   const [isTyping, setIsTyping] = useState(false);
+  const [hidden, setHidden] = useState(true);
 
   return (
     <div className="relative w-full">
       <PlaceholderText text={text} required={required} isTyping={isTyping} />
       <input
-        type="password"
+        type={hidden ? "password" : "text"}
         className={`w-full border rounded-lg px-3 py-2 pr-7 text-gray-700 appearance-none 
           ${error ? "border-red-500" : "border-gray-300"} 
           focus:outline-none focus:shadow-sm`}
-        onChange={(e) => setIsTyping(e.target.value.length > 0)}
+        onChange={(e) => {
+          setIsTyping(e.target.value.length > 0);
+          setState(e.target.value);
+        }}
+        value={value}
       />
-      <button className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500">
-        <img src={Eye} alt="Toggle visibility" />
+      <button
+        type="button"
+        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500"
+        onClick={() => setHidden(!hidden)}
+      >
+        <img src={Eye} alt="Toggle" />
       </button>
     </div>
   );
