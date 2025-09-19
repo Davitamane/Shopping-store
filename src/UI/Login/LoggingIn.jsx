@@ -1,8 +1,28 @@
 import { Controller, useForm } from "react-hook-form";
 import Button from "../Button";
 import Input from "../Input";
+import { useMutation } from "@tanstack/react-query";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+import { postLogin } from "../../services/apiQuery";
+import { useNavigate } from "react-router-dom";
 
 function LoggingIn({ setLogin }) {
+  const { loggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const { mutate } = useMutation({
+    mutationFn: postLogin,
+    onSuccess: (info) => {
+      // console.log(info.token);
+      loggedIn(info.token);
+      navigate("/");
+    },
+    onError: (error) => {
+      console.error("failed to send", error);
+    },
+  });
+
   const { handleSubmit, control } = useForm({
     defaultValues: {
       email: "",
@@ -11,7 +31,10 @@ function LoggingIn({ setLogin }) {
   });
 
   function onSubmit(data) {
-    console.log(data);
+    const formData = new FormData();
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    mutate(formData);
   }
 
   return (

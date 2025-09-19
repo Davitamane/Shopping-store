@@ -4,7 +4,7 @@ import LoggingIn from "../UI/Login/LoggingIn";
 import Registering from "../UI/Login/Registering";
 
 function Login() {
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState(true);
 
   return (
     <div className="grid grid-cols-2 min-h-100">

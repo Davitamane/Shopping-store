@@ -1,19 +1,24 @@
 import Button from "../Button";
 import Input from "../Input";
 import Camera from "../../assets/Camera.svg";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { postRegister } from "../../services/apiQuery";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 
 function Registering({ setLogin }) {
   const [image, setImage] = useState(null);
+  const navigate = useNavigate();
+  const { loggedIn } = useContext(AuthContext);
 
   const { mutate } = useMutation({
     mutationFn: postRegister,
     onSuccess: (info) => {
-      console.log(info);
+      // console.log(info.token);
+      loggedIn(info.token);
+      navigate("/");
     },
     onError: (error) => {
       console.error("failed to send", error);
