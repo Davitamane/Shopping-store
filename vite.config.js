@@ -5,4 +5,14 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  base: "/",
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://api.redseam.redberryinternship.ge/api",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });

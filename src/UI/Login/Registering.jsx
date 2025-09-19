@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { postRegister } from "../../services/apiQuery";
+import { Link } from "react-router-dom";
 
 function Registering({ setLogin }) {
   const [image, setImage] = useState(null);
@@ -75,7 +76,7 @@ function Registering({ setLogin }) {
             onChange={handleFileChange}
             id="file"
             type="file"
-            accept="image/*"
+            accept="image/jpeg"
             className="hidden"
           />
           <label htmlFor="file" className="cursor-pointer">
