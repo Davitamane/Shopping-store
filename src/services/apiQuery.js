@@ -12,5 +12,7 @@ async function postData(link, data) {
   return response.data;
 }
 
+export const getProducts = () => fetchData("/products");
+
 export const postLogin = (data) => postData("/login", data);
 export const postRegister = (data) => postData("/register", data);

@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
-import temp from "../../assets/temp.jpg";
 
-function Card() {
+function Card({ data }) {
+  console.log(data);
+
   return (
-    // <Link to={`/ListingPage/${data.id}`}>
-    <Link to={"01"}>
+    <Link to={`/products/${data.id}`}>
+      {/* <Link to={data.id}> */}
       <div className="w-full overflow-hidden hover:shadow-md  rounded-b-2xl transition-shadow duration-300">
-        <img src={temp} className="w-full object-cover object-center h-fit" />
+        <img
+          src={data.cover_image}
+          className="w-full object-cover object-center h-fit"
+        />
         <div className="m-4">
-          <h1 className="text-md">Kids' Curved Hilfiger Graphic T-Shirt</h1>
-          <p className="text-sm">$ 25</p>
+          <h1 className="text-md">{data.name}</h1>
+          <p className="text-sm">$ {data.price}</p>
         </div>
       </div>
     </Link>

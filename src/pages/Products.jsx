@@ -4,8 +4,19 @@ import Card from "../UI/Products/Card";
 import PaginationButton from "../UI/Products/PaginationButton";
 import ArrowLeft from "../assets/Arrow-left.svg";
 import ArrowRight from "../assets/Arrow-right.svg";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "../services/apiQuery";
 
 function Products() {
+  const productsQuery = useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+  });
+
+  if (!productsQuery.isFetched) return null;
+
+  console.log(productsQuery.data);
+
   return (
     <div className="mx-25 flex flex-col gap-8">
       <div className="flex justify-between">
@@ -25,16 +36,9 @@ function Products() {
         </div>
       </div>
       <div className="grid grid-cols-4 gap-y-12 gap-x-6">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {productsQuery.data.data.map((product) => (
+          <Card key={product.id} data={product} />
+        ))}
       </div>
       <div className="my-23 flex justify-center gap-2">
         <button>
