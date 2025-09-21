@@ -1,7 +1,7 @@
 const baseStyles =
-  "w-full py-2 font-thin gap-2 cursor-pointer h-fit relative flex items-center justify-center transition-all duration-300";
+  "w-full py-3 font-thin gap-2 cursor-pointer h-fit relative flex items-center justify-center transition-all duration-300";
 const typeStyles = {
-  primary: "bg-main text-white rounded-xl hover:bg-orange-700",
+  primary: "bg-main text-white rounded-lg hover:bg-orange-700",
   secondary:
     "bg-white border border-main rounded-xl border-2 text-main hover:bg-main hover:border-main hover:text-white",
   black: "bg-white border rounded-xl border-2",

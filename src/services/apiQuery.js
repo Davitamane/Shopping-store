@@ -6,6 +6,10 @@ async function fetchData(link) {
   const response = await axios.get(`${API_URL}${link}`);
   return response.data;
 }
+async function fetchDataId(link, id) {
+  const response = await axios.get(`${API_URL}${link}/${id}`);
+  return response.data;
+}
 
 async function postData(link, data) {
   const response = await axios.post(`${API_URL}${link}`, data);
@@ -13,6 +17,7 @@ async function postData(link, data) {
 }
 
 export const getProducts = () => fetchData("/products");
+export const getProduct = (id) => fetchDataId("/products", id);
 
 export const postLogin = (data) => postData("/login", data);
 export const postRegister = (data) => postData("/register", data);

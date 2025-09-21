@@ -4,6 +4,8 @@ import Cart from "../assets/Cart.svg";
 import Profile from "../assets/profile.jpeg";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import user from "../assets/user.svg";
+
 function Header() {
   const { token } = useContext(AuthContext);
 
@@ -27,7 +29,10 @@ function Header() {
           </>
         ) : (
           <Link to="/login">
-            <button>Log in</button>
+            <div className="flex items-center gap-2">
+              <img src={user} />
+              <button>Log in</button>
+            </div>
           </Link>
         )}
       </div>
