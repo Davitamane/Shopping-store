@@ -9,7 +9,7 @@ function Login() {
   return (
     <div className="grid grid-cols-2 min-h-100">
       <div>
-        <img src={image} className="w-[911  px]" />
+        <img src={image} className="h-screen" />
       </div>
       <div className="flex mx-40 items-center">
         {login ? (

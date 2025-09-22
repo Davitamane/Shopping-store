@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import user from "../assets/user.svg";
 
-function Header() {
+function Header({ onCartClick }) {
   const { token } = useContext(AuthContext);
 
   return (
@@ -17,9 +17,9 @@ function Header() {
       <div className="flex gap-5 items-center">
         {token ? (
           <>
-            <Link to="/checkout">
+            <button onClick={onCartClick}>
               <img src={Cart} />
-            </Link>
+            </button>
             <button>
               <img
                 src={Profile}
