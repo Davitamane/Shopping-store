@@ -5,13 +5,13 @@ import Close from "../assets/Close.svg";
 import cartBIIG from "../assets/Empty-cart.svg";
 import Button from "./Button";
 import Product from "./Sidebar/Product";
+import { Link } from "react-router-dom";
 
 function CartSidebar({ isOpen, onClose, empty = false }) {
   return createPortal(
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex">
-          {/* Backdrop */}
           <motion.div
             className="fixed inset-0 bg-black/20 cursor-pointer"
             onClick={onClose}
@@ -20,9 +20,8 @@ function CartSidebar({ isOpen, onClose, empty = false }) {
             exit={{ opacity: 0 }}
           />
 
-          {/* Sidebar */}
           <motion.div
-            className="ml-auto w-135 bg-white h-full shadow-lg p-10 relative"
+            className="ml-auto w-140 bg-white h-full shadow-lg p-10 relative"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -34,7 +33,6 @@ function CartSidebar({ isOpen, onClose, empty = false }) {
                 <img src={Close} alt="close" />
               </button>
             </div>
-            {/* if empty */}
             {empty ? (
               <div className="flex flex-col items-center justify-center mt-37.5 ">
                 <img src={cartBIIG} alt="BIIG" />
@@ -43,21 +41,40 @@ function CartSidebar({ isOpen, onClose, empty = false }) {
                   You've got nothing in your cart just yet...
                 </p>
                 <div className="mt-14 w-53.5">
-                  <Button>Start Shopping</Button>
+                  <Link to="/products">
+                    <Button onClick={() => onClose()}>Start Shopping</Button>
+                  </Link>
                 </div>
               </div>
             ) : (
-              <div className="h-full flex flex-col justify-between">
-              <div className="flex mt-16 flex-col gap-8">
-                <Product />
-              </div>
-              <div>
-                test
-              </div>
+              <div className="flex flex-col h-full">
+                <div className="flex-1 overflow-y-auto mt-16 flex flex-col gap-8">
+                  <Product />
+                  <Product />
+                  <Product />
+                </div>
+
+                <div className="my-8 flex-col gap-26 flex">
+                  <div className="flex flex-col gap-4">
+                    <div className="flex justify-between">
+                      <p>Items total</p>
+                      <p>$ 50</p>
+                    </div>
+                    <div className="flex justify-between">
+                      <p>Delivery</p>
+                      <p>$ 5</p>
+                    </div>
+                    <div className="flex justify-between text-xl font-semibold">
+                      <p>Total</p>
+                      <p>$ 50</p>
+                    </div>
+                  </div>
+                  <Link to="/checkout">
+                    <Button onClick={() => onClose()}>Go to checkout</Button>
+                  </Link>
+                </div>
               </div>
             )}
-
-            {/* if NOT empty */}
           </motion.div>
         </div>
       )}

@@ -10,7 +10,7 @@ function Header({ onCartClick }) {
   const { token } = useContext(AuthContext);
 
   return (
-    <div className="my-10 mx-25 flex items-center justify-between  max-w-screen ">
+    <div className="my-7 mx-25 flex items-center justify-between  max-w-screen ">
       <Link to="/">
         <img src={Logo} className="w-60" />
       </Link>

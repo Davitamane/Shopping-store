@@ -3,7 +3,7 @@ import Amount from "./Amount";
 
 function Product() {
   return (
-    <div className="flex w-full gap-4 items-center">
+    <div className="flex w-full gap-4 items-center ">
       <img
         src={shirtSmall}
         alt="shirt"

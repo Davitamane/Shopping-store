@@ -23,7 +23,7 @@ function Input({ text, required = false, error, setState, value }) {
       <PlaceholderText text={text} required={required} isTyping={isTyping} />
       <input
         type="text"
-        className={`w-full border rounded-lg px-3 py-2 pr-7 text-gray-700 appearance-none 
+        className={`w-full border rounded-lg px-3 py-2 pr-7 text-gray-700 appearance-none bg-white 
           ${error ? "border-red-500" : "border-gray-300"} 
           focus:outline-none focus:shadow-sm`}
         onChange={(e) => {

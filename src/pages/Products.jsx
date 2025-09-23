@@ -18,7 +18,7 @@ function Products() {
   console.log(productsQuery.data);
 
   return (
-    <div className="mx-25 flex flex-col gap-8">
+    <div className="mx-25 flex flex-col gap-8 my-18">
       <div className="flex justify-between">
         <h1 className="text-4xl font-bold">Products</h1>
         <div className="flex gap-15 items-center">
@@ -40,7 +40,7 @@ function Products() {
           <Card key={product.id} data={product} />
         ))}
       </div>
-      <div className="my-23 flex justify-center gap-2">
+      <div className="mt-22.5 flex justify-center gap-2">
         <button>
           <img src={ArrowLeft} alt="" />
         </button>
