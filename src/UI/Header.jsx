@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import Logo from "../assets/Logo.svg";
 import Cart from "../assets/Cart.svg";
-import Profile from "../assets/profile.jpeg";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import user from "../assets/user.svg";
 
 function Header({ onCartClick }) {
-  const { token } = useContext(AuthContext);
+  const { token, avatar } = useContext(AuthContext);
+
 
   return (
     <div className="my-7 mx-25 flex items-center justify-between  max-w-screen ">
@@ -22,7 +22,7 @@ function Header({ onCartClick }) {
             </button>
             <button>
               <img
-                src={Profile}
+                src={avatar.avatar}
                 className="rounded-full w-10 h-10 object-cover object-center"
               />
             </button>

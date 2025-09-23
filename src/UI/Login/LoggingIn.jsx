@@ -14,8 +14,8 @@ function LoggingIn({ setLogin }) {
   const { mutate } = useMutation({
     mutationFn: postLogin,
     onSuccess: (info) => {
-      // console.log(info.token);
-      loggedIn(info.token);
+      console.log(info);
+      loggedIn(info);
       navigate("/");
     },
     onError: (error) => {

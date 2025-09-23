@@ -1,16 +1,14 @@
-import shirtSmall from "../../assets/shirtSmall.jpg";
-import shirtBig from "../../assets/shirtBig.jpg";
-
-function Images() {
+function Images({ data }) {
   return (
     <div className="flex gap-6">
       <div className="flex flex-col gap-2">
-        <img src={shirtSmall} alt="small" />
-        <img src={shirtSmall} alt="small" />
-        <img src={shirtSmall} alt="small" />
+        {data.images.map((image, i) => (
+          <img src={image} alt="small" key={i} />
+        ))}
+
       </div>
       <div>
-        <img src={shirtBig} alt="big" />
+        <img src={data.cover_image} alt="big" />
       </div>
     </div>
   );

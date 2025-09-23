@@ -15,7 +15,7 @@ function Products() {
 
   if (!productsQuery.isFetched) return null;
 
-  console.log(productsQuery.data);
+  // console.log(productsQuery.data);
 
   return (
     <div className="mx-25 flex flex-col gap-8 my-18">

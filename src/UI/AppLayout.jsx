@@ -8,18 +8,18 @@ function AppLayout() {
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header onCartClick={() => setIsCartOpen(true)} />
-      <main>
-        <Outlet />
-      </main>
-      <ToastContainer />
+    <>
+      <div className="flex flex-col min-h-screen">
+        <Header onCartClick={() => setIsCartOpen(true)} />
+        <main>
+          <Outlet />
+        </main>
+        <ToastContainer />
 
-      <CartSidebar
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-      />
-    </div>
+        <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      </div>
+      <ToastContainer />
+    </>
   );
 }
 

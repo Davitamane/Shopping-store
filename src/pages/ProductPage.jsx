@@ -10,14 +10,14 @@ function ProductPage() {
     queryKey: ["product", id],
     queryFn: () => getProduct(id),
   });
-
+  if (!dataQuery.isFetched) return null;
   return (
     <div className="mx-25 flex flex-col gap-12">
       <p>Listing / product</p>
       <div className="grid grid-cols-2 gap-42">
-        <Images />
+        <Images data={dataQuery.data}/>
         <div>
-          <Details />
+          <Details data={dataQuery.data} id={id} />
         </div>
       </div>
     </div>

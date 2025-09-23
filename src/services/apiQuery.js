@@ -2,6 +2,14 @@ import axios from "axios";
 
 const API_URL = "https://api.redseam.redberryinternship.ge/api";
 
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 async function fetchData(link) {
   const response = await axios.get(`${API_URL}${link}`);
   return response.data;
@@ -11,13 +19,18 @@ async function fetchDataId(link, id) {
   return response.data;
 }
 
-async function postData(link, data) {
-  const response = await axios.post(`${API_URL}${link}`, data);
+async function postData(link, data, id = false) {
+  const url = id ? `${API_URL}${link}/${id}` : `${API_URL}${link}`;
+
+  const response = await axios.post(url, data);
+
   return response.data;
 }
 
 export const getProducts = () => fetchData("/products");
 export const getProduct = (id) => fetchDataId("/products", id);
+export const getCart = () => fetchData("/cart");
 
 export const postLogin = (data) => postData("/login", data);
 export const postRegister = (data) => postData("/register", data);
+export const postProduct = (data, id) => postData("/cart/products", data, id);

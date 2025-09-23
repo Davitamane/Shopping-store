@@ -6,8 +6,18 @@ import cartBIIG from "../assets/Empty-cart.svg";
 import Button from "./Button";
 import Product from "./Sidebar/Product";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getCart } from "../services/apiQuery";
 
-function CartSidebar({ isOpen, onClose, empty = false }) {
+function CartSidebar({ isOpen, onClose }) {
+  const cartQuery = useQuery({
+    queryKey: ["cart"],
+    queryFn: getCart,
+  });
+  if (!cartQuery.isFetched) return null;
+
+  const empty = cartQuery.data.length === 0;
+
   return createPortal(
     <AnimatePresence>
       {isOpen && (
@@ -49,9 +59,9 @@ function CartSidebar({ isOpen, onClose, empty = false }) {
             ) : (
               <div className="flex flex-col h-full">
                 <div className="flex-1 overflow-y-auto mt-16 flex flex-col gap-8">
-                  <Product />
-                  <Product />
-                  <Product />
+                  {cartQuery.data.map((data) => (
+                    <Product data={data} key={data.id} />
+                  ))}
                 </div>
 
                 <div className="my-8 flex-col gap-26 flex">
