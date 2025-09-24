@@ -27,10 +27,23 @@ async function postData(link, data, id = false) {
   return response.data;
 }
 
+async function patchData(link, data, id) {
+  const response = await axios.patch(`${API_URL}${link}/${id}`, data);
+  return response.data;
+}
+async function deleteData(link, id) {
+  const response = await axios.delete(`${API_URL}${link}/${id}`);
+  return response.data;
+}
+
 export const getProducts = () => fetchData("/products");
-export const getProduct = (id) => fetchDataId("/products", id);
+export const getProduct = (id) => fetchDataId("/products", id); 
 export const getCart = () => fetchData("/cart");
 
 export const postLogin = (data) => postData("/login", data);
 export const postRegister = (data) => postData("/register", data);
 export const postProduct = (data, id) => postData("/cart/products", data, id);
+
+export const patchRemoval = (id, data) => patchData("/cart/products", data, id);
+
+export const deleteItem = (id) => deleteData("/cart/products", id);

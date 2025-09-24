@@ -11,10 +11,14 @@ import { toast } from "react-toastify";
 
 function Details({ data, id }) {
   const [activeColor, setActiveColor] = useState(
-    data.color === "Default" ? data.available_colors[0] : data.color
+    data.color === "Default" || !data.color
+      ? data.available_colors[0]
+      : data.color
   );
-  const [activeSize, setActiveSize] = useState(data.size);
-  const [activeAmount, setActiveAmount] = useState(data.quantity);
+  const [activeSize, setActiveSize] = useState(
+    data.size || data.available_sizes[0]
+  );
+  const [activeAmount, setActiveAmount] = useState(data.quantity || 1);
   const quantity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const queryClient = useQueryClient();
   const navigate = useNavigate();

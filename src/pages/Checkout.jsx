@@ -4,9 +4,17 @@ import Input from "../UI/Input";
 import Product from "../UI/Sidebar/Product";
 import Modal from "../UI/Modal";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getCart } from "../services/apiQuery";
 
 function Checkout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const cartQuery = useQuery({
+    queryKey: ["cart"],
+    queryFn: getCart,
+  });
+  if (!cartQuery.isFetched) return null;
 
   return (
     <div className="mx-25 my-18">
@@ -18,7 +26,7 @@ function Checkout() {
             <Input text="Name" />
             <Input text="Surname" />
             <div className="col-span-2">
-              <Input text="EMial" />
+              <Input text="Email" />
             </div>
             <Input text="Address" />
             <Input text="Zip code" />
@@ -27,10 +35,13 @@ function Checkout() {
         <div className="h-158 w-115 ">
           <div className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto  flex flex-col gap-8">
+              {cartQuery.data.map((data) => (
+                <Product data={data} key={data.id} />
+              ))}
+              {/* <Product />
               <Product />
               <Product />
-              <Product />
-              <Product />
+              <Product /> */}
             </div>
 
             <div className="flex-col gap-20 flex ">

@@ -1,29 +1,48 @@
-import shirtSmall from "../../assets/shirtSmall.jpg";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Amount from "./Amount";
+import { deleteItem } from "../../services/apiQuery";
+import { toast } from "react-toastify";
 
 function Product({ data }) {
-  console.log(data);
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: deleteItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["cart"]);
+      toast.success("successfully deleted");
+    },
+    onError: (err) => {
+      toast.error(err);
+    },
+  });
 
   return (
-    <div className="flex w-full gap-4 items-center ">
+    <div className="flex w-full gap-4 items-center">
       <img
-        src={shirtSmall}
-        // src={data.cover_image}
+        // src={shirtSmall}
+        src={data.cover_image}
         alt="shirt"
-        className="rounded-xl border border-gray-200"
+        className="rounded-xl border border-gray-200 w-25"
       />
       <div className="flex flex-col w-full gap-4">
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
             <h2>{data.name}</h2>
-            <p className="font-semibold text-xl">$ 25</p>
+            <p className="font-semibold text-xl">
+              $ {data.price * data.quantity}
+            </p>
           </div>
-          <p className="text-xs">Baby pink</p>
-          <p className="text-xs">L</p>
+          <p className="text-xs">{data.color}</p>
+          <p className="text-xs">{data.size}</p>
         </div>
         <div className="flex justify-between">
-          <Amount />
-          <button className="text-gray-400 text-sm">Remove</button>
+          <Amount data={data} />
+          <button
+            className="text-gray-400 text-sm"
+            onClick={() => mutate(data.id)}
+          >
+            Remove
+          </button>
         </div>
       </div>
     </div>

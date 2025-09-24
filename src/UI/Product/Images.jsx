@@ -3,12 +3,13 @@ function Images({ data }) {
     <div className="flex gap-6">
       <div className="flex flex-col gap-2">
         {data.images.map((image, i) => (
-          <img src={image} alt="small" key={i} />
+          <button className="w-30 border border-main" key={i}>
+            <img src={image} alt="small" />
+          </button>
         ))}
-
       </div>
       <div>
-        <img src={data.cover_image} alt="big" />
+        <img src={data.cover_image} alt="big" className="w-175" />
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import Images from "../UI/Product/Images";
 import Details from "../UI/Product/Details";
 
 function ProductPage() {
+  
   const { id } = useParams();
   const dataQuery = useQuery({
     queryKey: ["product", id],
