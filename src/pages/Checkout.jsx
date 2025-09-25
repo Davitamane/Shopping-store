@@ -20,8 +20,8 @@ function Checkout() {
     onSuccess: (info) => {
       toast.success(info.message);
       console.log(info);
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
       setIsModalOpen(true);
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError: (err) => {
       console.error(err);

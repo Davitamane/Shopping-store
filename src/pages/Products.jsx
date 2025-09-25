@@ -17,6 +17,8 @@ function Products() {
   const page = +searchParams.get("page") || 1;
   const category = searchParams.get("category") || "all";
   const sort = searchParams.get("sort") || "newest";
+  const totalPages = 10;
+  const pagination = getPaginationPages(page, totalPages);
 
   const productsQuery = useQuery({
     queryKey: ["products", page, category, sort],
@@ -29,7 +31,21 @@ function Products() {
   function handleOpen(name) {
     name === open ? setOpen("") : setOpen(name);
   }
-  console.log(page);
+
+  function getPaginationPages(current, total) {
+    const pages = [];
+
+    if (current === 1 || current === total)
+      pages.push(1, 2, "...", total - 1, total);
+    else if (current === 2) pages.push(1, 2, 3, "...", total - 1, total);
+    else if (current === total - 1)
+      pages.push(1, 2, "...", total - 2, total - 1, total);
+    else pages.push(1, "...", current - 1, current, current + 1, "...", total);
+
+    console.log(pages);
+
+    return pages;
+  }
 
   return (
     <div className="mx-25 flex flex-col gap-8 my-18">
@@ -74,11 +90,18 @@ function Products() {
         >
           <img src={ArrowLeft} alt="arrowLeft" />
         </button>
-        <PaginationButton active={true}>1</PaginationButton>
-        <PaginationButton>2</PaginationButton>
-        <PaginationButton>...</PaginationButton>
-        <PaginationButton>9</PaginationButton>
-        <PaginationButton>10</PaginationButton>
+        {pagination.map((p, i) => (
+          <PaginationButton
+            key={i}
+            active={p === page}
+            onClick={() =>
+              typeof p === "number" &&
+              setSearchParams({ page: p, category, sort })
+            }
+          >
+            {p}
+          </PaginationButton>
+        ))}
         <button
           onClick={() => setSearchParams({ page: page + 1, category, sort })}
           disabled={page >= 10}
