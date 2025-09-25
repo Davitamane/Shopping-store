@@ -18,7 +18,7 @@ function Checkout() {
   const { mutate } = useMutation({
     mutationFn: postCheckout,
     onSuccess: (info) => {
-      toast.success(info.message)
+      toast.success(info.message);
       console.log(info);
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       setIsModalOpen(true);
@@ -42,16 +42,16 @@ function Checkout() {
     defaultValues: {
       name: "",
       surname: "",
-      email: email?.email || "",
+      email: email || "",
       address: "",
       zip_code: "",
     },
   });
   useEffect(() => {
-    if (email?.email) {
+    if (email) {
       reset((prev) => ({
         ...prev,
-        email: email.email,
+        email: email,
       }));
     }
   }, [email, reset]);

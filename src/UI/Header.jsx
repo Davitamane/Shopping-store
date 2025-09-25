@@ -4,6 +4,7 @@ import Cart from "../assets/Cart.svg";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import user from "../assets/user.svg";
+import profile from "../assets/profile.webp";
 
 function Header({ onCartClick }) {
   const { token, avatar } = useContext(AuthContext);
@@ -21,8 +22,8 @@ function Header({ onCartClick }) {
             </button>
             <button>
               <img
-                src={avatar.avatar}
-                className="rounded-full w-10 h-10 object-cover object-center"
+                src={avatar && avatar !== "null" ? avatar : profile}
+                className="rounded-full size-10 object-cover object-center"
               />
             </button>
           </>

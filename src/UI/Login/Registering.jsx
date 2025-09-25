@@ -17,7 +17,7 @@ function Registering({ setLogin }) {
     mutationFn: postRegister,
     onSuccess: (info) => {
       // console.log(info.token);
-      loggedIn(info.token);
+      loggedIn(info);
       navigate("/");
     },
     onError: (error) => {
@@ -25,7 +25,12 @@ function Registering({ setLogin }) {
     },
   });
 
-  const { resetField, control, handleSubmit } = useForm({
+  const {
+    resetField,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       email: "",
       username: "",
@@ -53,9 +58,8 @@ function Registering({ setLogin }) {
     console.log([...formData.entries()]);
     mutate(formData);
   }
-  if (image && image.length === 0) {
-    resetField("avatar");
-  }
+
+  image && resetField("avatar");
 
   return (
     <form
@@ -89,7 +93,7 @@ function Registering({ setLogin }) {
           </label>
         </div>
         {image && (
-          <button type="button" onClick={() => setImage("")}>
+          <button type="button" onClick={() => setImage(null)}>
             Remove
           </button>
         )}
@@ -105,6 +109,7 @@ function Registering({ setLogin }) {
               required={true}
               setState={field.onChange}
               value={field.value}
+              error={!!errors.username}
             />
           )}
         />
@@ -118,6 +123,7 @@ function Registering({ setLogin }) {
               required={true}
               setState={field.onChange}
               value={field.value}
+              error={!!errors.email}
             />
           )}
         />
@@ -131,19 +137,27 @@ function Registering({ setLogin }) {
               required={true}
               setState={field.onChange}
               value={field.value}
+              error={!!errors.password}
             />
           )}
         />
         <Controller
           name="password_confirmation"
           control={control}
-          rules={{ required: "this is required", minLength: 3 }}
+          rules={{
+            required: "this is required",
+            minLength: 3,
+            validate: (value) => {
+              value === control._formValues.password || "Password doesnt match";
+            },
+          }}
           render={({ field }) => (
             <Input.Addons
               text="Confirm password"
               required={true}
               setState={field.onChange}
               value={field.value}
+              error={!!errors.password_confirmation}
             />
           )}
         />

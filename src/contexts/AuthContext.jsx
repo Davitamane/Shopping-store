@@ -11,18 +11,23 @@ function AuthProvider({ children }) {
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     const avatar = localStorage.getItem("avatar");
+
     if (token) {
-      setToken({ token });
-      setEmail({ email });
-      setAvatar({ avatar });
+      setToken(token); // <- just the string
+      setEmail(email);
+      setAvatar(avatar);
     }
   }, []);
 
   function loggedIn(data) {
     localStorage.setItem("token", data.token);
     localStorage.setItem("email", data.user.email);
-    localStorage.setItem("avatar", data.user.avatar);
-    setToken(data);
+    localStorage.setItem("avatar", data.user?.avatar || "");
+
+    // Keep state consistent with localStorage
+    setToken(data.token);
+    setEmail(data.user.email);
+    setAvatar(data.user?.avatar || "");
   }
 
   return (
