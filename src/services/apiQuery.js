@@ -36,7 +36,16 @@ async function deleteData(link, data, id) {
   return response.data;
 }
 
-export const getProducts = () => fetchData("/products");
+// fetch products with optional pagination and filters
+export const getProducts = ({ page = 1, category, sort } = {}) => {
+  const params = { page };
+
+  if (category && category !== "all") params.category = category;
+  if (sort && sort !== "newest") params.sort = sort;
+
+  return axios.get(`${API_URL}/products`, { params }).then((res) => res.data);
+};
+
 export const getProduct = (id) => fetchDataId("/products", id);
 export const getCart = () => fetchData("/cart");
 

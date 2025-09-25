@@ -6,16 +6,30 @@ import ArrowLeft from "../assets/Arrow-left.svg";
 import ArrowRight from "../assets/Arrow-right.svg";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../services/apiQuery";
+import Filtering from "../UI/Products/Filtering";
+import Sortby from "../UI/Products/Sortby";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function Products() {
+  const [open, setOpen] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = +searchParams.get("page") || 1;
+  const category = searchParams.get("category") || "all";
+  const sort = searchParams.get("sort") || "newest";
+
   const productsQuery = useQuery({
-    queryKey: ["products"],
-    queryFn: getProducts,
+    queryKey: ["products", page, category, sort],
+    queryFn: () => getProducts({ page, category, sort }),
+    keepPreviousData: true,
   });
 
   if (!productsQuery.isFetched) return null;
 
-  // console.log(productsQuery.data);
+  function handleOpen(name) {
+    name === open ? setOpen("") : setOpen(name);
+  }
+  console.log(page);
 
   return (
     <div className="mx-25 flex flex-col gap-8 my-18">
@@ -24,11 +38,24 @@ function Products() {
         <div className="flex gap-15 items-center">
           <p className="text-sm text-gray-500">Showing 1-10 of 100 results</p>
           <div className="flex gap-10 ">
-            <button className="flex items-center gap-2">
-              <img src={Filter} alt="" className="w-5 h-5" />
-              <p>Filter</p>
-            </button>
-            <button className="flex items-center gap-2">
+            <div
+              className={`px-2 rounded-2xl ${open === "filtering" && "bg-gray-200"} transition-all duration-300`}
+            >
+              <button
+                onClick={() => handleOpen("filtering")}
+                className="flex items-center gap-2"
+              >
+                <img src={Filter} alt="" className="w-5 h-5" />
+                <p>Filter</p>
+              </button>
+              {open === "filtering" && <Filtering />}
+              {open === "sortBy" && <Sortby />}
+            </div>
+
+            <button
+              className={`flex items-center gap-2 px-2 rounded-2xl ${open === "sortBy" && "bg-gray-200"} transition-all duration-300`}
+              onClick={() => handleOpen("sortBy")}
+            >
               <p>Sort by</p>
               <img src={ArrowDown} className="size-2.5" />
             </button>
@@ -41,16 +68,22 @@ function Products() {
         ))}
       </div>
       <div className="mt-22.5 flex justify-center gap-2">
-        <button>
-          <img src={ArrowLeft} alt="" />
+        <button
+          onClick={() => setSearchParams({ page: page - 1, category, sort })}
+          disabled={page <= 1}
+        >
+          <img src={ArrowLeft} alt="arrowLeft" />
         </button>
         <PaginationButton active={true}>1</PaginationButton>
         <PaginationButton>2</PaginationButton>
         <PaginationButton>...</PaginationButton>
         <PaginationButton>9</PaginationButton>
         <PaginationButton>10</PaginationButton>
-        <button>
-          <img src={ArrowRight} alt="" />
+        <button
+          onClick={() => setSearchParams({ page: page + 1, category, sort })}
+          disabled={page >= 10}
+        >
+          <img src={ArrowRight} alt="arrowRight" />
         </button>
       </div>
     </div>
