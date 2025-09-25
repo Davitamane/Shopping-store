@@ -15,14 +15,15 @@ function Products() {
   const [open, setOpen] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const page = +searchParams.get("page") || 1;
-  const category = searchParams.get("category") || "all";
+  const minPrice = searchParams.get("minPrice") || "";
+  const maxPrice = searchParams.get("maxPrice") || "";
   const sort = searchParams.get("sort") || "newest";
   const totalPages = 10;
   const pagination = getPaginationPages(page, totalPages);
 
   const productsQuery = useQuery({
-    queryKey: ["products", page, category, sort],
-    queryFn: () => getProducts({ page, category, sort }),
+    queryKey: ["products", page, minPrice, maxPrice, sort],
+    queryFn: () => getProducts({ page, minPrice, maxPrice, sort }),
     keepPreviousData: true,
   });
 
@@ -31,18 +32,26 @@ function Products() {
   function handleOpen(name) {
     name === open ? setOpen("") : setOpen(name);
   }
-
   function getPaginationPages(current, total) {
     const pages = [];
+    const maxButtons = 5; // total buttons visible (excluding "prev" and "next")
 
-    if (current === 1 || current === total)
-      pages.push(1, 2, "...", total - 1, total);
-    else if (current === 2) pages.push(1, 2, 3, "...", total - 1, total);
-    else if (current === total - 1)
-      pages.push(1, 2, "...", total - 2, total - 1, total);
-    else pages.push(1, "...", current - 1, current, current + 1, "...", total);
+    if (total <= maxButtons) {
+      // If total pages are small, show all
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      // Always include first and last
+      const left = Math.max(2, current - 1);
+      const right = Math.min(total - 1, current + 1);
 
-    console.log(pages);
+      pages.push(1);
+
+      if (left > 2) pages.push("..."); // gap after first
+      for (let i = left; i <= right; i++) pages.push(i);
+      if (right < total - 1) pages.push("..."); // gap before last
+
+      pages.push(total);
+    }
 
     return pages;
   }
@@ -64,7 +73,7 @@ function Products() {
                 <img src={Filter} alt="" className="w-5 h-5" />
                 <p>Filter</p>
               </button>
-              {open === "filtering" && <Filtering />}
+              {open === "filtering" && <Filter  ing  setSearchParams={setSearchParams}/>}
               {open === "sortBy" && <Sortby />}
             </div>
 
@@ -85,7 +94,7 @@ function Products() {
       </div>
       <div className="mt-22.5 flex justify-center gap-2">
         <button
-          onClick={() => setSearchParams({ page: page - 1, category, sort })}
+          onClick={() => setSearchParams({ page: page - 1, minPrice, maxPrice, sort })}
           disabled={page <= 1}
         >
           <img src={ArrowLeft} alt="arrowLeft" />
@@ -96,14 +105,14 @@ function Products() {
             active={p === page}
             onClick={() =>
               typeof p === "number" &&
-              setSearchParams({ page: p, category, sort })
+              setSearchParams({ page: p, minPrice, maxPrice, sort })
             }
           >
             {p}
           </PaginationButton>
         ))}
         <button
-          onClick={() => setSearchParams({ page: page + 1, category, sort })}
+          onClick={() => setSearchParams({ page: page + 1, minPrice, maxPrice, sort })}
           disabled={page >= 10}
         >
           <img src={ArrowRight} alt="arrowRight" />
