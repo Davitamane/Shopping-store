@@ -8,11 +8,15 @@ import Product from "./Sidebar/Product";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getCart } from "../services/apiQuery";
+import { AuthContext } from "../contexts/AuthContext";
+import { useContext } from "react";
 
 function CartSidebar({ isOpen, onClose }) {
+  const { token } = useContext(AuthContext);
   const cartQuery = useQuery({
     queryKey: ["cart"],
     queryFn: getCart,
+    enabled: !!token && isOpen,
   });
   if (!cartQuery.isFetched) return null;
 
@@ -38,7 +42,9 @@ function CartSidebar({ isOpen, onClose }) {
             transition={{ type: "tween", duration: 0.3 }}
           >
             <div className="flex items-center justify-between">
-              <h2 className="font-semibold text-xl">Shopping cart (0)</h2>
+              <h2 className="font-semibold text-xl">
+                Shopping cart ({cartQuery.data.length})
+              </h2>
               <button onClick={onClose}>
                 <img src={Close} alt="close" />
               </button>
@@ -68,7 +74,12 @@ function CartSidebar({ isOpen, onClose }) {
                   <div className="flex flex-col gap-4">
                     <div className="flex justify-between">
                       <p>Items total</p>
-                      <p>$ 50</p>
+                      <p>
+                        ${" "}
+                        {cartQuery.data
+                          .map((data) => data.total_price)
+                          .reduce((acc, cur) => acc + cur, 0)}
+                      </p>
                     </div>
                     <div className="flex justify-between">
                       <p>Delivery</p>
@@ -76,7 +87,12 @@ function CartSidebar({ isOpen, onClose }) {
                     </div>
                     <div className="flex justify-between text-xl font-semibold">
                       <p>Total</p>
-                      <p>$ 50</p>
+                      <p>
+                        ${" "}
+                        {cartQuery.data
+                          .map((data) => data.total_price)
+                          .reduce((acc, cur) => acc + cur, 0) + 5}
+                      </p>
                     </div>
                   </div>
                   <Link to="/checkout">

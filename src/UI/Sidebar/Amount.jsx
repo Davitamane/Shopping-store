@@ -10,7 +10,7 @@ function Amount({ data }) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: ({ id, data }) => patchRemoval(id, data),
-    onSuccess: (info) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
@@ -21,6 +21,8 @@ function Amount({ data }) {
       id: data.id,
       data: {
         quantity: newCounter,
+        color: data.color,
+        size: data.size,
       },
     });
   }

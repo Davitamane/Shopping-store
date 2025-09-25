@@ -8,7 +8,6 @@ import user from "../assets/user.svg";
 function Header({ onCartClick }) {
   const { token, avatar } = useContext(AuthContext);
 
-
   return (
     <div className="my-7 mx-25 flex items-center justify-between  max-w-screen ">
       <Link to="/">

@@ -6,20 +6,19 @@ import { toast } from "react-toastify";
 function Product({ data }) {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
-    mutationFn: deleteItem,
+    mutationFn: ({ id, data }) => deleteItem(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries(["cart"]);
-      toast.success("successfully deleted");
+      toast.success("Successfully deleted");
     },
     onError: (err) => {
-      toast.error(err);
+      toast.error(err.message);
     },
   });
 
   return (
     <div className="flex w-full gap-4 items-center">
       <img
-        // src={shirtSmall}
         src={data.cover_image}
         alt="shirt"
         className="rounded-xl border border-gray-200 w-25"
@@ -39,7 +38,15 @@ function Product({ data }) {
           <Amount data={data} />
           <button
             className="text-gray-400 text-sm"
-            onClick={() => mutate(data.id)}
+            onClick={() =>
+              mutate({
+                id: data.id,
+                data: {
+                  color: data.color,
+                  size: data.size,
+                },
+              })
+            }
           >
             Remove
           </button>

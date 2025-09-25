@@ -38,7 +38,7 @@ function Details({ data, id }) {
 
   function handleSubmit() {
     mutate({
-      id, // this is the product ID you get from props
+      id,
       data: {
         quantity: activeAmount,
         color: activeColor,
