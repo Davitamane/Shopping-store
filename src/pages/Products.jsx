@@ -15,15 +15,24 @@ function Products() {
   const [open, setOpen] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const page = +searchParams.get("page") || 1;
-  const minPrice = searchParams.get("minPrice") || "";
-  const maxPrice = searchParams.get("maxPrice") || "";
+  const price_from = searchParams.get("filter[price_from]") || "";
+  const price_to = searchParams.get("filter[price_to]") || "";
   const sort = searchParams.get("sort") || "newest";
   const totalPages = 10;
   const pagination = getPaginationPages(page, totalPages);
 
   const productsQuery = useQuery({
-    queryKey: ["products", page, minPrice, maxPrice, sort],
-    queryFn: () => getProducts({ page, minPrice, maxPrice, sort }),
+    queryKey: ["products", page, price_from, price_to, sort],
+    queryFn: () =>
+      getProducts({
+        queryFn: () =>
+          getProducts({
+            page,
+            "filter[price_from]": Number(price_from) || undefined,
+            "filter[price_to]": Number(price_to) || undefined,
+            sort,
+          }),
+      }),
     keepPreviousData: true,
   });
 
@@ -73,7 +82,15 @@ function Products() {
                 <img src={Filter} alt="" className="w-5 h-5" />
                 <p>Filter</p>
               </button>
-              {open === "filtering" && <Filter  ing  setSearchParams={setSearchParams}/>}
+              {open === "filtering" && (
+                <Filtering
+                  setSearchParams={setSearchParams}
+                  page={page}
+                  sort={sort}
+                  price_from={price_from}
+                  price_to={price_to}
+                />
+              )}
               {open === "sortBy" && <Sortby />}
             </div>
 
@@ -94,7 +111,14 @@ function Products() {
       </div>
       <div className="mt-22.5 flex justify-center gap-2">
         <button
-          onClick={() => setSearchParams({ page: page - 1, minPrice, maxPrice, sort })}
+          onClick={() =>
+            setSearchParams({
+              page: page - 1,
+              "filter[price_from]": price_from,
+              "filter[price_to]": price_to,
+              sort,
+            })
+          }
           disabled={page <= 1}
         >
           <img src={ArrowLeft} alt="arrowLeft" />
@@ -105,14 +129,26 @@ function Products() {
             active={p === page}
             onClick={() =>
               typeof p === "number" &&
-              setSearchParams({ page: p, minPrice, maxPrice, sort })
+              setSearchParams({
+                page: p,
+                "filter[price_from]": price_from,
+                "filter[price_to]": price_to,
+                sort,
+              })
             }
           >
             {p}
           </PaginationButton>
         ))}
         <button
-          onClick={() => setSearchParams({ page: page + 1, minPrice, maxPrice, sort })}
+          onClick={() =>
+            setSearchParams({
+              page: page + 1,
+              "filter[price_from]": price_from,
+              "filter[price_to]": price_to,
+              sort,
+            })
+          }
           disabled={page >= 10}
         >
           <img src={ArrowRight} alt="arrowRight" />
