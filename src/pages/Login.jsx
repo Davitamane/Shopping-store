@@ -1,7 +1,7 @@
 import { useState } from "react";
 import image from "../assets/Photo01.jpg";
-import LoggingIn from "../UI/Login/LoggingIn";
-import Registering from "../UI/Login/Registering";
+import LoggingIn from "./Login/LoggingIn";
+import Registering from "./Login/Registering";
 
 function Login() {
   const [login, setLogin] = useState(true);

@@ -2,11 +2,12 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "./UI/AppLayout";
 import Products from "./pages/Products";
 import ProductPage from "./pages/ProductPage";
-import Login from "./pages/Login";
 import Checkout from "./pages/Checkout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AuthProvider from "./contexts/AuthContext";
+import Registering from "./pages/Login/Registering";
+import LoggingIn from "./pages/Login/LoggingIn";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,7 +28,8 @@ function App() {
 
               <Route path="products" element={<Products />} />
               <Route path="products/:id" element={<ProductPage />} />
-              <Route path="login" element={<Login />} />
+              <Route path="login" element={<LoggingIn />} />
+              <Route path="register" element={<Registering />} />
               <Route path="checkout" element={<Checkout />} />
             </Route>
           </Routes>
