@@ -32,17 +32,13 @@ async function patchData(link, data, id) {
   return response.data;
 }
 async function deleteData(link, data, id) {
-  const response = await axios.delete(`${API_URL}${link}/${id}`, data);
+  const response = await axios.delete(`${API_URL}${link}/${id}`, {
+    data,
+  });
   return response.data;
 }
 
-// fetch products with optional pagination and filters
-export const getProducts = ({ page = 1, category, sort } = {}) => {
-  const params = { page };
-
-  if (category && category !== "all") params.category = category;
-  if (sort && sort !== "newest") params.sort = sort;
-
+export const getProducts = (params = {}) => {
   return axios.get(`${API_URL}/products`, { params }).then((res) => res.data);
 };
 

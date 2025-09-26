@@ -9,6 +9,7 @@ import { getCart, postCheckout } from "../services/apiQuery";
 import { AuthContext } from "../contexts/AuthContext";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import cartBIIG from "../assets/Empty-cart.svg";
 
 function Checkout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,6 +66,21 @@ function Checkout() {
   }
 
   if (!cartQuery.isFetched) return null;
+  if (cartQuery.data.length === 0)
+    return (
+      <div className="flex flex-col items-center justify-center mt-37.5 ">
+        <img src={cartBIIG} alt="BIIG" />
+        <h2 className="mt-6 mb-2.5 font-semibold text-2xl">Ooops!</h2>
+        <p className="text-gray-600 text-sm">
+          You've got nothing in your cart just yet...
+        </p>
+        <div className="mt-14 w-53.5">
+          <Link to="/products">
+            <Button>Start Shopping</Button>
+          </Link>
+        </div>
+      </div>
+    );
   return (
     <div className="mx-25 my-18">
       <h1 className="font-bold text-[42px] mb-10.5">Checkout</h1>

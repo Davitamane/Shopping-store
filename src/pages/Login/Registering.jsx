@@ -9,7 +9,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import displayImage from "../../assets/Photo01.jpg";
 
-
 function Registering() {
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
@@ -123,7 +122,14 @@ function Registering() {
             <Controller
               name="email"
               control={control}
-              rules={{ required: "this is required", minLength: 3 }}
+              rules={{
+                required: "this is required",
+                minLength: 3,
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Invalid email address",
+                },
+              }}
               render={({ field }) => (
                 <Input
                   text="Email"
@@ -154,10 +160,9 @@ function Registering() {
               rules={{
                 required: "this is required",
                 minLength: 3,
-                validate: (value) => {
+                validate: (value) =>
                   value === control._formValues.password ||
-                    "Password doesnt match";
-                },
+                  "Password doesn't match",
               }}
               render={({ field }) => (
                 <Input.Addons

@@ -24,7 +24,11 @@ function LoggingIn() {
     },
   });
 
-  const { handleSubmit, control } = useForm({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       email: "",
       password: "",
@@ -53,13 +57,21 @@ function LoggingIn() {
             <Controller
               name="email"
               control={control}
-              rules={{ required: "this is required", minLength: 3 }}
+              rules={{
+                required: "this is required",
+                minLength: 3,
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Invalid email address",
+                },
+              }}
               render={({ field }) => (
                 <Input
                   text="Email or username"
                   required={true}
                   setState={field.onChange}
                   value={field.value}
+                  error={errors.email}
                 />
               )}
             />

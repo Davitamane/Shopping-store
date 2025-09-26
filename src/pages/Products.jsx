@@ -17,22 +17,19 @@ function Products() {
   const page = +searchParams.get("page") || 1;
   const price_from = searchParams.get("filter[price_from]") || "";
   const price_to = searchParams.get("filter[price_to]") || "";
-  const sort = searchParams.get("sort") || "newest";
+  const sort = searchParams.get("sort") || "";
   const totalPages = 10;
   const pagination = getPaginationPages(page, totalPages);
-
   const productsQuery = useQuery({
     queryKey: ["products", page, price_from, price_to, sort],
     queryFn: () =>
       getProducts({
-        queryFn: () =>
-          getProducts({
-            page,
-            "filter[price_from]": Number(price_from) || undefined,
-            "filter[price_to]": Number(price_to) || undefined,
-            sort,
-          }),
+        page,
+        "filter[price_from]": Number(price_from) || undefined,
+        "filter[price_to]": Number(price_to) || undefined,
+        sort,
       }),
+
     keepPreviousData: true,
   });
 

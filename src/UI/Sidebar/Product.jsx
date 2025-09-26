@@ -16,10 +16,13 @@ function Product({ data }) {
     },
   });
 
+  const index = data.available_colors.indexOf(data.color);
+  console.log(index);
+
   return (
     <div className="flex w-full gap-4 items-center">
       <img
-        src={data.cover_image}
+        src={data.images[index]}
         alt="shirt"
         className="rounded-xl border border-gray-200 w-25"
       />
