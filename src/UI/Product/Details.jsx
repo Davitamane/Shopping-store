@@ -5,27 +5,25 @@ import Size from "./Size";
 import Cart from "../../assets/Cart-white.svg";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { postProduct } from "../../services/apiQuery";
 import { toast } from "react-toastify";
 
-function Details({ data, id, activeColor, setActiveColor }) {
+function Details({ data, id, activeColor, setActiveColor, setIsCartOpen }) {
   const [activeSize, setActiveSize] = useState(
     data.size || data.available_sizes[0] || ""
   );
   const [activeAmount, setActiveAmount] = useState(data.quantity || 1);
   const quantity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const sizeOrder = ["XS", "S", "M", "L", "XL"];
+  const token = localStorage.getItem("token");
 
   const { mutate } = useMutation({
     mutationFn: ({ id, data }) => postProduct(data, id),
-    onSuccess: (info) => {
-      console.log(info);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
-      navigate("/");
       toast.success("Successfully added to cart!");
+      setIsCartOpen(true);
     },
     onError: (error) => {
       console.error("failed to send", error);
@@ -94,11 +92,25 @@ function Details({ data, id, activeColor, setActiveColor }) {
           />
         </div>
       </div>
-
-      <Button onClick={() => handleSubmit()}>
-        <img src={Cart} alt="cart" />
-        <p>Add to cart</p>
-      </Button>
+      {token ? (
+        <Button
+          onClick={() => {
+            handleSubmit();
+            setIsCartOpen(true);
+          }}
+        >
+          <img src={Cart} alt="cart" />
+          <p>Add to cart</p>
+        </Button>
+      ) : (
+        <Button
+          onClick={() => toast.error("You must be logged in first")}
+          disabled={true}
+        >
+          <img src={Cart} alt="cart" />
+          <p>Add to cart</p>
+        </Button>
+      )}
 
       <div className="w-full h-px bg-gray-200" />
 

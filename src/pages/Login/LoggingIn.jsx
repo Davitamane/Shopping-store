@@ -7,6 +7,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { postLogin } from "../../services/apiQuery";
 import { Link, useNavigate } from "react-router-dom";
 import image from "../../assets/Photo01.jpg";
+import { toast } from "react-toastify";
 
 function LoggingIn() {
   const { loggedIn } = useContext(AuthContext);
@@ -20,7 +21,11 @@ function LoggingIn() {
       navigate("/");
     },
     onError: (error) => {
-      console.error("failed to send", error);
+      if (error.status === 401) {
+        toast.error("Email is taken or incorrect password");
+      } else {
+        toast.error("Something went wrong");
+      }
     },
   });
 
@@ -47,7 +52,7 @@ function LoggingIn() {
       <div>
         <img src={image} className="w-237 h-248" />
       </div>
-      <div className="flex mx-40 items-center">
+      <div className="flex mx-40 items-center w-138.5">
         <form
           className="w-full flex flex-col gap-12"
           onSubmit={handleSubmit(onSubmit)}
@@ -58,7 +63,7 @@ function LoggingIn() {
               name="email"
               control={control}
               rules={{
-                required: "this is required",
+                required: "this field is required",
                 minLength: 3,
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -66,26 +71,41 @@ function LoggingIn() {
                 },
               }}
               render={({ field }) => (
-                <Input
-                  text="Email or username"
-                  required={true}
-                  setState={field.onChange}
-                  value={field.value}
-                  error={errors.email}
-                />
+                <div className="flex flex-col">
+                  <Input
+                    text="Email"
+                    required={true}
+                    setState={field.onChange}
+                    value={field.value}
+                    error={!!errors.email}
+                  />
+                  {errors.email && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.email.message}
+                    </span>
+                  )}
+                </div>
               )}
             />
             <Controller
               name="password"
               control={control}
-              rules={{ required: "this is required", minLength: 2 }}
+              rules={{ required: "this field is required", minLength: 3 }}
               render={({ field }) => (
-                <Input.Addons
-                  text="Password"
-                  required={true}
-                  setState={field.onChange}
-                  value={field.value}
-                />
+                <div className="flex flex-col">
+                  <Input.Addons
+                    text="Password"
+                    required={true}
+                    setState={field.onChange}
+                    value={field.value}
+                    error={!!errors.password}
+                  />
+                  {errors.password && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.password.message}
+                    </span>
+                  )}
+                </div>
               )}
             />
           </div>

@@ -91,49 +91,106 @@ function Checkout() {
               <Controller
                 name="name"
                 control={control}
-                rules={{ required: "this field is required", minLength: 3 }}
+                rules={{
+                  required: "This field is required",
+                  minLength: { value: 3, message: "Too short" },
+                }}
                 render={({ field }) => (
-                  <Input
-                    text="Name"
-                    required={false}
-                    setState={field.onChange}
-                    value={field.value}
-                    error={!!errors.name}
-                  />
+                  <div>
+                    <Input
+                      text="Name"
+                      required={false}
+                      setState={field.onChange}
+                      value={field.value}
+                      error={!!errors.name}
+                    />
+                    {errors.name && (
+                      <span className="text-red-500 text-sm mt-1">
+                        {errors.name.message}
+                      </span>
+                    )}
+                  </div>
                 )}
               />
               <Controller
                 name="surname"
                 control={control}
-                rules={{ required: "this field is required", minLength: 3 }}
+                rules={{
+                  required: "This field is required",
+                  minLength: { value: 3, message: "Too short" },
+                }}
                 render={({ field }) => (
-                  <Input
-                    text="Surname"
-                    required={false}
-                    setState={field.onChange}
-                    value={field.value}
-                    error={!!errors.surname}
-                  />
+                  <div>
+                    <Input
+                      text="Surname"
+                      required={false}
+                      setState={field.onChange}
+                      value={field.value}
+                      error={!!errors.surname}
+                    />
+                    {errors.surname && (
+                      <span className="text-red-500 text-sm mt-1">
+                        {errors.surname.message}
+                      </span>
+                    )}
+                  </div>
                 )}
               />
               <div className="col-span-2">
                 <Controller
                   name="email"
                   control={control}
-                  rules={{ required: "this field is required", minLength: 3 }}
+                  rules={{
+                    required: "this field is required",
+                    minLength: 3,
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Invalid email address",
+                    },
+                  }}
                   render={({ field }) => (
-                    <Input.EmailInput
-                      text="Email"
+                    <div className="flex flex-col">
+                      <Input
+                        text="Email"
+                        required={true}
+                        setState={field.onChange}
+                        value={field.value}
+                        error={!!errors.email}
+                      />
+                      {errors.email && (
+                        <span className="text-red-500 text-sm mt-1">
+                          {errors.email.message}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                />
+              </div>
+              <Controller
+                name="address"
+                control={control}
+                rules={{
+                  required: "This field is required",
+                  minLength: { value: 3, message: "Too short" },
+                }}
+                render={({ field }) => (
+                  <div>
+                    <Input
+                      text="Address"
                       required={false}
                       setState={field.onChange}
                       value={field.value}
-                      error={!!errors.email}
+                      error={!!errors.address}
                     />
-                  )}
-                />
-                {/* <Input.EmailInput text="Email" value={email.email} /> */}
-              </div>
-              <Controller
+                    {errors.address && (
+                      <span className="text-red-500 text-sm mt-1">
+                        {errors.address.message}
+                      </span>
+                    )}
+                  </div>
+                )}
+              />
+              {/* <Controller
                 name="address"
                 control={control}
                 rules={{ required: "this field is required", minLength: 3 }}
@@ -146,20 +203,29 @@ function Checkout() {
                     error={!!errors.address}
                   />
                 )}
-              />
+              /> */}
               <Controller
                 name="zip_code"
                 control={control}
-                rules={{ required: "this field is required", minLength: 3 }}
+                rules={{
+                  required: "This field is required",
+                  minLength: { value: 3, message: "Too short" },
+                }}
                 render={({ field }) => (
-                  <Input
-                    text="Zip code"
-                    required={false}
-                    setState={field.onChange}
-                    value={field.value}
-                    error={!!errors.zip_code}
-                    type="number"
-                  />
+                  <div>
+                    <Input
+                      text="Zip code"
+                      required={false}
+                      setState={field.onChange}
+                      value={field.value}
+                      error={!!errors.zip_code}
+                    />
+                    {errors.zip_code && (
+                      <span className="text-red-500 text-sm mt-1">
+                        {errors.zip_code.message}
+                      </span>
+                    )}
+                  </div>
                 )}
               />
             </div>
@@ -198,7 +264,6 @@ function Checkout() {
                   </div>
                 </div>
                 <Button onClick={handleSubmit(onSubmit)}>Pay</Button>
-                {/* <Button onClick={() => setIsModalOpen(true)}>Pay</Button> */}
               </div>
             </div>
           </div>

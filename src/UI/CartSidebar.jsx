@@ -10,21 +10,29 @@ import { useQuery } from "@tanstack/react-query";
 import { getCart } from "../services/apiQuery";
 import { AuthContext } from "../contexts/AuthContext";
 import { useContext } from "react";
+import { GlobalContext } from "../contexts/GlobalContext";
 
-function CartSidebar({ isOpen, onClose }) {
+function CartSidebar() {
+  const { isCartOpen, setIsCartOpen } = useContext(GlobalContext);
   const { token } = useContext(AuthContext);
   const cartQuery = useQuery({
     queryKey: ["cart"],
     queryFn: getCart,
-    enabled: !!token && isOpen,
+    enabled: !!token && isCartOpen,
   });
   if (!cartQuery.isFetched) return null;
 
+  isCartOpen && document.body.classList.add("overflow-hidden");
+
   const empty = cartQuery.data.length === 0;
+  function onClose() {
+    setIsCartOpen(false);
+    document.body.classList.remove("overflow-hidden");
+  }
 
   return createPortal(
     <AnimatePresence>
-      {isOpen && (
+      {isCartOpen && (
         <div className="fixed inset-0 z-50 flex">
           <motion.div
             className="fixed inset-0 bg-black/20 cursor-pointer"
@@ -63,43 +71,45 @@ function CartSidebar({ isOpen, onClose }) {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col h-full">
-                <div className="flex-1 overflow-y-auto mt-16 flex flex-col gap-8">
-                  {cartQuery.data.map((data) => (
-                    <Product data={data} key={data.id} />
-                  ))}
-                </div>
-
-                <div className="my-8 flex-col gap-26 flex">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex justify-between">
-                      <p>Items total</p>
-                      <p>
-                        ${" "}
-                        {cartQuery.data
-                          .map((data) => data.total_price)
-                          .reduce((acc, cur) => acc + cur, 0)}
-                      </p>
-                    </div>
-                    <div className="flex justify-between">
-                      <p>Delivery</p>
-                      <p>$ 5</p>
-                    </div>
-                    <div className="flex justify-between text-xl font-semibold">
-                      <p>Total</p>
-                      <p>
-                        ${" "}
-                        {cartQuery.data
-                          .map((data) => data.total_price)
-                          .reduce((acc, cur) => acc + cur, 0) + 5}
-                      </p>
-                    </div>
+              cartQuery.isFetched && (
+                <div className="flex flex-col h-full">
+                  <div className="flex-1 overflow-y-auto mt-16 flex flex-col gap-8">
+                    {cartQuery.data.map((data) => (
+                      <Product data={data} key={data.id} />
+                    ))}
                   </div>
-                  <Link to="/checkout">
-                    <Button onClick={() => onClose()}>Go to checkout</Button>
-                  </Link>
+
+                  <div className="my-8 flex-col gap-26 flex">
+                    <div className="flex flex-col gap-4">
+                      <div className="flex justify-between">
+                        <p>Items total</p>
+                        <p>
+                          ${" "}
+                          {cartQuery.data
+                            .map((data) => data.total_price)
+                            .reduce((acc, cur) => acc + cur, 0)}
+                        </p>
+                      </div>
+                      <div className="flex justify-between">
+                        <p>Delivery</p>
+                        <p>$ 5</p>
+                      </div>
+                      <div className="flex justify-between text-xl font-semibold">
+                        <p>Total</p>
+                        <p>
+                          ${" "}
+                          {cartQuery.data
+                            .map((data) => data.total_price)
+                            .reduce((acc, cur) => acc + cur, 0) + 5}
+                        </p>
+                      </div>
+                    </div>
+                    <Link to="/checkout">
+                      <Button onClick={() => onClose()}>Go to checkout</Button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              )
             )}
           </motion.div>
         </div>

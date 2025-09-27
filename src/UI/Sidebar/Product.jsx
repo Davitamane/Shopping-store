@@ -3,6 +3,7 @@ import Amount from "./Amount";
 import { deleteItem } from "../../services/apiQuery";
 import { toast } from "react-toastify";
 
+
 function Product({ data }) {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
@@ -17,7 +18,6 @@ function Product({ data }) {
   });
 
   const index = data.available_colors.indexOf(data.color);
-  console.log(index);
 
   return (
     <div className="flex w-full gap-4 items-center">

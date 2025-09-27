@@ -105,7 +105,11 @@ function Products() {
               className={`flex items-center gap-2 px-2 rounded-2xl ${open === "sortBy" && "bg-gray-200"} transition-all duration-300`}
               onClick={() => handleOpen("sortBy")}
             >
-              <p>Sort by</p>
+              {sort === "created_at" && <p>New products first</p>}
+              {sort === "price" && <p>Price, low to high</p>}
+              {sort === "-price" && <p>Price, high to low</p>}
+              {sort === "" && <p>Sort by</p>}
+
               <img src={ArrowDown} className="size-2.5" />
             </button>
           </div>
@@ -119,7 +123,7 @@ function Products() {
           <button
             onClick={() => {
               setSearchParams({
-                page: page,
+                page: 1,
                 "filter[price_from]": "",
                 "filter[price_to]": "",
                 sort,

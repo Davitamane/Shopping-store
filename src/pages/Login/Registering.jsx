@@ -8,6 +8,7 @@ import { postRegister } from "../../services/apiQuery";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import displayImage from "../../assets/Photo01.jpg";
+import { toast } from "react-toastify";
 
 function Registering() {
   const [image, setImage] = useState(null);
@@ -22,7 +23,10 @@ function Registering() {
       navigate("/");
     },
     onError: (error) => {
-      console.error("failed to send", error);
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+        console.log(error.response.data.message);
+      }
     },
   });
 
@@ -43,6 +47,12 @@ function Registering() {
   function handleFileChange(e) {
     const file = e.target.files[0];
     if (!file) return;
+
+    // Check file size (1 MB)
+    if (file.size > 1024 * 1024) {
+      toast.error("Image must be less than 1 MB");
+      return;
+    }
 
     setImage(file);
   }
@@ -67,7 +77,7 @@ function Registering() {
       <div>
         <img src={displayImage} className="w-237 h-248" />
       </div>
-      <div className="flex mx-40 items-center">
+      <div className="flex mx-40 items-center w-138.5">
         <form
           className="w-full flex flex-col gap-12"
           onSubmit={handleSubmit(onSubmit)}
@@ -108,22 +118,32 @@ function Registering() {
             <Controller
               name="username"
               control={control}
-              rules={{ required: "this is required", minLength: 3 }}
+              rules={{
+                required: "This field is required",
+                minLength: { value: 3, message: "Too short" },
+              }}
               render={({ field }) => (
-                <Input
-                  text="Username"
-                  required={true}
-                  setState={field.onChange}
-                  value={field.value}
-                  error={!!errors.username}
-                />
+                <div className="flex flex-col">
+                  <Input
+                    text="Username"
+                    required={true}
+                    setState={field.onChange}
+                    value={field.value}
+                    error={!!errors.username}
+                  />
+                  {errors.username && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.username.message}
+                    </span>
+                  )}
+                </div>
               )}
             />
             <Controller
               name="email"
               control={control}
               rules={{
-                required: "this is required",
+                required: "this field is required",
                 minLength: 3,
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -131,47 +151,67 @@ function Registering() {
                 },
               }}
               render={({ field }) => (
-                <Input
-                  text="Email"
-                  required={true}
-                  setState={field.onChange}
-                  value={field.value}
-                  error={!!errors.email}
-                />
+                <div className="flex flex-col">
+                  <Input
+                    text="Email"
+                    required={true}
+                    setState={field.onChange}
+                    value={field.value}
+                    error={!!errors.email}
+                  />
+                  {errors.email && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.email.message}
+                    </span>
+                  )}
+                </div>
               )}
             />
             <Controller
               name="password"
               control={control}
-              rules={{ required: "this is required", minLength: 3 }}
+              rules={{ required: "this field is required", minLength: 3 }}
               render={({ field }) => (
-                <Input.Addons
-                  text="Password"
-                  required={true}
-                  setState={field.onChange}
-                  value={field.value}
-                  error={!!errors.password}
-                />
+                <div className="flex flex-col">
+                  <Input.Addons
+                    text="Password"
+                    required={true}
+                    setState={field.onChange}
+                    value={field.value}
+                    error={!!errors.password}
+                  />
+                  {errors.password && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.password.message}
+                    </span>
+                  )}
+                </div>
               )}
             />
             <Controller
               name="password_confirmation"
               control={control}
               rules={{
-                required: "this is required",
-                minLength: 3,
-                validate: (value) =>
-                  value === control._formValues.password ||
-                  "Password doesn't match",
+                required: "This field is required",
+                minLength: { value: 3, message: "Password too short" },
+                validate: (value, formValues) =>
+                  value === formValues.password || "Passwords don't match",
               }}
               render={({ field }) => (
-                <Input.Addons
-                  text="Confirm password"
-                  required={true}
-                  setState={field.onChange}
-                  value={field.value}
-                  error={!!errors.password_confirmation}
-                />
+                <div className="flex flex-col">
+                  <Input.Addons
+                    text="Confirm password"
+                    required={true}
+                    setState={field.onChange}
+                    value={field.value}
+                    error={!!errors.password_confirmation}
+                  />
+                  {errors.password_confirmation && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors.password_confirmation.message}
+                    </span>
+                  )}
+                </div>
               )}
             />
           </div>

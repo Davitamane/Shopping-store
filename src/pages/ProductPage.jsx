@@ -3,11 +3,13 @@ import { useParams } from "react-router-dom";
 import { getProduct } from "../services/apiQuery";
 import Images from "../UI/Product/Images";
 import Details from "../UI/Product/Details";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 function ProductPage() {
   const { id } = useParams();
   const [activeColor, setActiveColor] = useState("");
+  const { setIsCartOpen } = useContext(GlobalContext);
 
   const dataQuery = useQuery({
     queryKey: ["product", id],
@@ -37,6 +39,7 @@ function ProductPage() {
             id={id}
             setActiveColor={setActiveColor}
             activeColor={activeColor}
+            setIsCartOpen={setIsCartOpen}
           />
         </div>
       </div>

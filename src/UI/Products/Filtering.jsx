@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Button from "../Button";
 import Input from "../Input";
+import { toast } from "react-toastify";
 
 function Filtering({
   setSearchParams,
-  page,
   sort,
   price_from,
   price_to,
@@ -14,13 +14,19 @@ function Filtering({
   const [max, setMax] = useState(price_to);
 
   function handleClick() {
-    setSearchParams({
-      page,
-      sort,
-      "filter[price_from]": min,
-      "filter[price_to]": max,
-    });
+    if (Number(max) <= Number(min)) {
+      toast.error("Max price cannot be smaller than Min price");
+      return;
+    } else {
+      setSearchParams({
+        page: 1,
+        sort,
+        "filter[price_from]": min,
+        "filter[price_to]": max,
+      });
+    }
   }
+
   return (
     <div className="absolute mt-2 w-98 p-4 bg-white rounded-md shadow-lg border border-gray-200 z-10 right-56">
       <h1 className="font-semibold text-base pb-5">Select price</h1>
@@ -28,14 +34,14 @@ function Filtering({
         <Input
           required={true}
           text="From"
-          setState={setMin}
+          setState={(val) => setMin(+val < 0 ? 0 : +val)}
           type="number"
           value={min}
         />
         <Input
           required={true}
           text="To"
-          setState={setMax}
+          setState={(val) => setMax(+val < 0 ? 0 : +val)}
           type="number"
           value={max}
         />

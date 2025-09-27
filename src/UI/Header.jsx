@@ -5,10 +5,11 @@ import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import user from "../assets/user.svg";
 import profile from "../assets/profile.webp";
+import { GlobalContext } from "../contexts/GlobalContext";
 
-function Header({ onCartClick }) {
+function Header() {
   const { token, avatar } = useContext(AuthContext);
-
+  const { setIsCartOpen } = useContext(GlobalContext);
   return (
     <div className="my-7 mx-25 flex items-center justify-between  max-w-screen ">
       <Link to="/">
@@ -17,7 +18,7 @@ function Header({ onCartClick }) {
       <div className="flex gap-5 items-center">
         {token ? (
           <>
-            <button onClick={onCartClick}>
+            <button onClick={() => setIsCartOpen(true)}>
               <img src={Cart} />
             </button>
             <button>
