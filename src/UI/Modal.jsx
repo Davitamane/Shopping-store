@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { createPortal } from "react-dom";
 import close from "../assets/Close.svg";
 import success from "../assets/Success.svg";
@@ -7,20 +7,6 @@ import { Link } from "react-router-dom";
 
 function Modal({ isModalOpen, setIsModalOpen }) {
   const modalRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setIsModalOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   if (!isModalOpen) return null;
 

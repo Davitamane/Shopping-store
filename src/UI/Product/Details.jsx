@@ -14,7 +14,7 @@ function Details({ data, id }) {
     data.color === "Default" || !data.color
       ? data.available_colors[0]
       : data.color
-  );
+  );  
   const [activeSize, setActiveSize] = useState(
     data.size || data.available_sizes[0] || ""
   );
