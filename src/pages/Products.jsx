@@ -10,6 +10,7 @@ import Filtering from "../UI/Products/Filtering";
 import Sortby from "../UI/Products/Sortby";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import close from "../assets/Close.svg";
 
 function Products() {
   const [open, setOpen] = useState("");
@@ -18,8 +19,6 @@ function Products() {
   const price_from = searchParams.get("filter[price_from]") || "";
   const price_to = searchParams.get("filter[price_to]") || "";
   const sort = searchParams.get("sort") || "";
-  const totalPages = 10;
-  const pagination = getPaginationPages(page, totalPages);
   const productsQuery = useQuery({
     queryKey: ["products", page, price_from, price_to, sort],
     queryFn: () =>
@@ -35,18 +34,19 @@ function Products() {
 
   if (!productsQuery.isFetched) return null;
 
+  const totalPages = productsQuery.data.meta.last_page;
+  const pagination = getPaginationPages(page, totalPages);
+
   function handleOpen(name) {
     name === open ? setOpen("") : setOpen(name);
   }
   function getPaginationPages(current, total) {
     const pages = [];
-    const maxButtons = 5; // total buttons visible (excluding "prev" and "next")
+    const maxButtons = 5;
 
     if (total <= maxButtons) {
-      // If total pages are small, show all
       for (let i = 1; i <= total; i++) pages.push(i);
     } else {
-      // Always include first and last
       const left = Math.max(2, current - 1);
       const right = Math.min(total - 1, current + 1);
 
@@ -67,7 +67,10 @@ function Products() {
       <div className="flex justify-between">
         <h1 className="text-4xl font-bold">Products</h1>
         <div className="flex gap-15 items-center">
-          <p className="text-sm text-gray-500">Showing 1-10 of 100 results</p>
+          <p className="text-sm text-gray-500">
+            Showing {productsQuery.data.meta.from}-{productsQuery.data.meta.to}{" "}
+            of {productsQuery.data.meta.total} results
+          </p>
           <div className="flex gap-10 ">
             <div
               className={`px-2 rounded-2xl ${open === "filtering" && "bg-gray-200"} transition-all duration-300`}
@@ -86,9 +89,16 @@ function Products() {
                   sort={sort}
                   price_from={price_from}
                   price_to={price_to}
+                  setOpen={setOpen}
                 />
               )}
-              {open === "sortBy" && <Sortby />}
+              {open === "sortBy" && (
+                <Sortby
+                  setSearchParams={setSearchParams}
+                  searchParams={searchParams}
+                  setOpen={setOpen}
+                />
+              )}
             </div>
 
             <button
@@ -101,6 +111,25 @@ function Products() {
           </div>
         </div>
       </div>
+      {(price_from || price_to) && (
+        <div className="flex items-center gap-1 text-gray-600 w-fit font-thin border-1 p-1 pl-3 pr-3 rounded-2xl border-gray-400">
+          <p>
+            Price: {price_from}-{price_to}
+          </p>
+          <button
+            onClick={() => {
+              setSearchParams({
+                page: page,
+                "filter[price_from]": "",
+                "filter[price_to]": "",
+                sort,
+              });
+            }}
+          >
+            <img src={close} className="size-3" />
+          </button>
+        </div>
+      )}
       <div className="grid grid-cols-4 gap-y-12 gap-x-6">
         {productsQuery.data.data.map((product) => (
           <Card key={product.id} data={product} />
