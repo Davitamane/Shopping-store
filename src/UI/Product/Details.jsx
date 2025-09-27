@@ -9,12 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { postProduct } from "../../services/apiQuery";
 import { toast } from "react-toastify";
 
-function Details({ data, id }) {
-  const [activeColor, setActiveColor] = useState(
-    data.color === "Default" || !data.color
-      ? data.available_colors[0]
-      : data.color
-  );  
+function Details({ data, id, activeColor, setActiveColor }) {
   const [activeSize, setActiveSize] = useState(
     data.size || data.available_sizes[0] || ""
   );
