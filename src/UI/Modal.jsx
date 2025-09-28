@@ -19,11 +19,9 @@ function Modal({ isModalOpen, setIsModalOpen }) {
         id="modalForm"
       >
         <div className="flex justify-end">
-          <Link to="/products">
-            <button onClick={() => setIsModalOpen(false)}>
-              <img src={close} />
-            </button>
-          </Link>
+          <button onClick={() => setIsModalOpen(false)}>
+            <img src={close} />
+          </button>
         </div>
         <div className="flex justify-center h-full">
           <div className="flex flex-col items-center gap-10 w-fit">

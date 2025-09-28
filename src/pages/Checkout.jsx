@@ -189,21 +189,7 @@ function Checkout() {
                     )}
                   </div>
                 )}
-              />
-              {/* <Controller
-                name="address"
-                control={control}
-                rules={{ required: "this field is required", minLength: 3 }}
-                render={({ field }) => (
-                  <Input
-                    text="Address"
-                    required={false}
-                    setState={field.onChange}
-                    value={field.value}
-                    error={!!errors.address}
-                  />
-                )}
-              /> */}
+              />{" "}
               <Controller
                 name="zip_code"
                 control={control}
@@ -219,6 +205,7 @@ function Checkout() {
                       setState={field.onChange}
                       value={field.value}
                       error={!!errors.zip_code}
+                      type="number"
                     />
                     {errors.zip_code && (
                       <span className="text-red-500 text-sm mt-1">

@@ -10,6 +10,7 @@ import Registering from "./pages/Login/Registering";
 import LoggingIn from "./pages/Login/LoggingIn";
 import CartSidebar from "./UI/CartSidebar";
 import GlobalProvider from "./contexts/GlobalContext";
+import Errors from "./pages/Errors";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,7 @@ function App() {
                 <Route path="login" element={<LoggingIn />} />
                 <Route path="register" element={<Registering />} />
                 <Route path="checkout" element={<Checkout />} />
+                <Route path="404" element={<Errors />} />
               </Route>
             </Routes>
             <CartSidebar />

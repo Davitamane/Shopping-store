@@ -3,13 +3,7 @@ import Button from "../Button";
 import Input from "../Input";
 import { toast } from "react-toastify";
 
-function Filtering({
-  setSearchParams,
-  sort,
-  price_from,
-  price_to,
-  setOpen,
-}) {
+function Filtering({ setSearchParams, sort, price_from, price_to, setOpen }) {
   const [min, setMin] = useState(price_from);
   const [max, setMax] = useState(price_to);
 
@@ -31,19 +25,21 @@ function Filtering({
     <div className="absolute mt-2 w-98 p-4 bg-white rounded-md shadow-lg border border-gray-200 z-10 right-56">
       <h1 className="font-semibold text-base pb-5">Select price</h1>
       <div className="grid grid-cols-2 gap-2.5 pb-2.5">
-        <Input
-          required={true}
-          text="From"
-          setState={(val) => setMin(+val < 0 ? 0 : +val)}
+        <input
           type="number"
-          value={min}
+          placeholder="From"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 pr-7 text-gray-700 appearance-none bg-white 
+            focus:outline-none focus:shadow-sm placeholder:text-gray-700 "
+          onChange={(e) => setMin(e.target.value < 0 ? 0 : +e.target.value)}
+          onKeyDown={(e) => e.key === "-" && e.preventDefault()}
         />
-        <Input
-          required={true}
-          text="To"
-          setState={(val) => setMax(+val < 0 ? 0 : +val)}
+        <input
           type="number"
-          value={max}
+          placeholder="To"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 pr-7 text-gray-700 appearance-none bg-white 
+            focus:outline-none focus:shadow-sm placeholder:text-gray-700 "
+          onChange={(e) => setMax(e.target.value < 0 ? 0 : +e.target.value)}
+          onKeyDown={(e) => e.key === "-" && e.preventDefault()}
         />
       </div>
       <div className="flex justify-end">

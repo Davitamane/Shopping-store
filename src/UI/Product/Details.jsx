@@ -7,8 +7,12 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postProduct } from "../../services/apiQuery";
 import { toast } from "react-toastify";
+import { Navigate } from "react-router-dom";
 
 function Details({ data, id, activeColor, setActiveColor, setIsCartOpen }) {
+  if (!data.available_sizes || data.available_sizes.length === 0) {
+    return <Navigate to="/404" replace />;
+  }
   const [activeSize, setActiveSize] = useState(
     data.size || data.available_sizes[0] || ""
   );
