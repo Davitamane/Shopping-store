@@ -7,15 +7,14 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postProduct } from "../../services/apiQuery";
 import { toast } from "react-toastify";
-import { Navigate } from "react-router-dom";
 
 function Details({ data, id, activeColor, setActiveColor, setIsCartOpen }) {
-  if (!data.available_sizes || data.available_sizes.length === 0) {
-    return <Navigate to="/404" replace />;
-  }
   const [activeSize, setActiveSize] = useState(
-    data.size || data.available_sizes[0] || ""
+    data.size ||
+      (Array.isArray(data.available_sizes) && data.available_sizes[0]) ||
+      ""
   );
+
   const [activeAmount, setActiveAmount] = useState(data.quantity || 1);
   const quantity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const queryClient = useQueryClient();
@@ -30,7 +29,7 @@ function Details({ data, id, activeColor, setActiveColor, setIsCartOpen }) {
       setIsCartOpen(true);
     },
     onError: (error) => {
-      console.error("failed to send", error);
+      toast.error(error.message);
     },
   });
 
@@ -71,21 +70,23 @@ function Details({ data, id, activeColor, setActiveColor, setIsCartOpen }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <p>Size: {activeSize}</p>
-          <div className="flex items-center gap-4">
-            {data.available_sizes
-              .sort((a, b) => sizeOrder.indexOf(a) - sizeOrder.indexOf(b))
-              .map((size, i) => (
-                <Size
-                  active={size === activeSize}
-                  setActiveSize={setActiveSize}
-                  size={size}
-                  key={i}
-                />
-              ))}
+        {data.available_sizes && data.available_sizes.length > 0 && (
+          <div className="flex flex-col gap-4">
+            <p>Size: {activeSize}</p>
+            <div className="flex items-center gap-4">
+              {data.available_sizes
+                .sort((a, b) => sizeOrder.indexOf(a) - sizeOrder.indexOf(b))
+                .map((size, i) => (
+                  <Size
+                    active={size === activeSize}
+                    setActiveSize={setActiveSize}
+                    size={size}
+                    key={i}
+                  />
+                ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="flex flex-col gap-4">
           <p>Quantity</p>
@@ -100,7 +101,6 @@ function Details({ data, id, activeColor, setActiveColor, setIsCartOpen }) {
         <Button
           onClick={() => {
             handleSubmit();
-            setIsCartOpen(true);
           }}
         >
           <img src={Cart} alt="cart" />

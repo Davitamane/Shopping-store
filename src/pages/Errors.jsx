@@ -1,4 +1,3 @@
-import Error from "../assets/Error.svg";
 
 function Errors() {
   return (
