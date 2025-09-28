@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { patchRemoval } from "../../services/apiQuery";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,6 +14,9 @@ function Amount({ data }) {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
+  useEffect(() => {
+    setCounter(data.quantity);
+  }, [data.quantity]);
   // console.log(data.id);
 
   function handleChange(newCounter) {

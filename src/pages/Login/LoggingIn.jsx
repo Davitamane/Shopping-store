@@ -64,7 +64,7 @@ function LoggingIn() {
               control={control}
               rules={{
                 required: "this field is required",
-                minLength: 3,
+                minLength: { value: 3, message: "Too short" },
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                   message: "Invalid email address",
@@ -90,7 +90,10 @@ function LoggingIn() {
             <Controller
               name="password"
               control={control}
-              rules={{ required: "this field is required", minLength: 3 }}
+              rules={{
+                required: "this field is required",
+                minLength: { value: 3, message: "Too short" },
+              }}
               render={({ field }) => (
                 <div className="flex flex-col">
                   <Input.Addons

@@ -3,10 +3,9 @@ import Amount from "./Amount";
 import { deleteItem } from "../../services/apiQuery";
 import { toast } from "react-toastify";
 
-
 function Product({ data }) {
   const queryClient = useQueryClient();
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: ({ id, data }) => deleteItem(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries(["cart"]);
@@ -50,6 +49,7 @@ function Product({ data }) {
                 },
               })
             }
+            disabled={isPending}
           >
             Remove
           </button>

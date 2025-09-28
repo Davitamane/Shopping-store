@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../services/apiQuery";
 import Filtering from "../UI/Products/Filtering";
 import Sortby from "../UI/Products/Sortby";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import close from "../assets/Close.svg";
 
@@ -31,6 +31,10 @@ function Products() {
 
     keepPreviousData: true,
   });
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [page]);
 
   if (!productsQuery.isFetched) return null;
 
