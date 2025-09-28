@@ -32,6 +32,7 @@ function Filtering({ setSearchParams, sort, price_from, price_to, setOpen }) {
             focus:outline-none focus:shadow-sm placeholder:text-gray-700 "
           onChange={(e) => setMin(e.target.value < 0 ? 0 : +e.target.value)}
           onKeyDown={(e) => e.key === "-" && e.preventDefault()}
+          value={min}
         />
         <input
           type="number"
@@ -40,6 +41,7 @@ function Filtering({ setSearchParams, sort, price_from, price_to, setOpen }) {
             focus:outline-none focus:shadow-sm placeholder:text-gray-700 "
           onChange={(e) => setMax(e.target.value < 0 ? 0 : +e.target.value)}
           onKeyDown={(e) => e.key === "-" && e.preventDefault()}
+          value={max}
         />
       </div>
       <div className="flex justify-end">
